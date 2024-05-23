@@ -1,4 +1,4 @@
-# Conjur - Kubernetes Integration with ESO
+# Conjur - Kubernetes/OpenShift Integration with ESO
 
 This document describes how to integrate [CyberArk Secrets Management](https://www.cyberark.com/products/secrets-management/) (Conjur) with Kubernetes or OpenShift. The integration
 is done using the [External Secrets Operator (ESO)](https://external-secrets.io/latest/).
