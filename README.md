@@ -273,6 +273,6 @@ be recreated to reflect the change.
 
 The following sources have been used for this how-to:
 
-https://docs.cyberark.com/conjur-open-source/Latest/en/Content/Integrations/k8s-ocp/k8s-jwt-secrets-store-eso.htm
-https://external-secrets.io/latest/provider/conjur/
-https://github.com/conjurdemos/Accelerator-K8s-External-Secrets
+- https://docs.cyberark.com/conjur-open-source/Latest/en/Content/Integrations/k8s-ocp/k8s-jwt-secrets-store-eso.htm
+- https://external-secrets.io/latest/provider/conjur/
+- https://github.com/conjurdemos/Accelerator-K8s-External-Secrets
