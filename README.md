@@ -28,7 +28,7 @@ First, we need to install the External Secrets Operator (ESO) in our Kubernetes 
 helm repo add external-secrets https://charts.external-secrets.io
 helm install external-secrets \
     external-secrets/external-secrets \
-    -n tools \
+    -n hello-world-eso \
     --create-namespace \
     --set installCRDs=true
 ```
@@ -46,8 +46,8 @@ that the host is named `host/testing/database-backup-script1` and has access to 
 Kubernetes Secrets are base64 encoded. So we need to convert the API key and host id to base64:
 
 ```bash
-echo -n "testing/database-password1" | base64  # Output: dGVzdGluZy9kYXRhYmFzZS1wYXNzd29yZDE=
-echo -n "api-key" | base64  # Output: YXBpLWtleQ==
+echo -n "host/serverxyz" | base64  # Output: dGVzdGluZy9kYXRhYmFzZS1wYXNzd29yZDE=
+echo -n "host-api-key" | base64  # Output: YXBpLWtleQ==
 ```
 #### 2.3 Create the Secret
 Create a file ([secret.yml](kubernetes/secret.yml)) with the following content (replace the placeholders `<host_id_base64>`
@@ -67,7 +67,7 @@ data:
 and apply the secret to the cluster (for this demo we use the namespace `hello-world-eso`):
 
 ```bash
-kubectl apply -f secret.yaml -n hello-world-eso
+kubectl apply -f secret.yml -n hello-world-eso
 ```
 
 NB: Storing a secret in code is not recommended. In a production environment you should use a
@@ -88,7 +88,7 @@ spec:
   provider:
     conjur:
       # Service URL
-      url: https://conjur.pocpuppy.nl
+      url: https://conjur.url
       # [OPTIONAL] base64 encoded string of certificate
       # caBundle: <ca_bundle>
       auth:
@@ -212,7 +212,7 @@ hello-world-5fd89f4c49-l2psr                        1/1     Running   0         
 kubectl exec -it hello-world-5fd89f4c49-l2psr -n hello-world-eso -- env | grep DB_PASSWORD1
 ```
 
-The output should be like `DB_PASSWORD1=<secret_value>`
+The output should be like `<secret_value>`
 
 
 ## Reloading pods on secret change
@@ -224,7 +224,7 @@ configmaps and reloads the pods that use them.
 1. Install the Reloader package:
 ```bash
 helm repo add stakater https://stakater.github.io/stakater-charts
-helm install stakater/reloader -n tools  --set reloader.watchGlobally=false --generate-name
+helm install stakater/reloader -n hello-world-eso  --set reloader.watchGlobally=false --generate-name
 ```
 
 2. Add the annotation `reloader.stakater.com/auto: "true"` to the deployment of the dummy application
