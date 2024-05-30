@@ -89,7 +89,7 @@ spec:
     conjur:
       # Service URL
       url: https://conjur.url
-      # [OPTIONAL] base64 encoded string of certificate
+      # [OPTIONAL] base64 encoded string of the Conjur certificate
       # caBundle: <ca_bundle>
       auth:
         apikey:
@@ -149,8 +149,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: hello-world
-  annotations:
-    reloader.stakater.com/auto: "true"
 spec:
   replicas: 1
   selector:
@@ -168,11 +166,11 @@ spec:
           ports:
             - containerPort: 8000
           env:
-            - name: DB_PASSWORD1
+            - name: DB_PASSWORD1  # The name of the environment variable for in the container;
               valueFrom:
                 secretKeyRef:
                   name: conjur
-                  key: DB_PASSWORD1
+                  key: DB_PASSWORD1  # The key of the secret in Kubernetes;
 ```
 
 Apply the dummy application to the cluster:
