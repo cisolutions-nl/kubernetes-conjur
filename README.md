@@ -149,6 +149,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: hello-world
+  annotations:
+    reloader.stakater.com/auto: "true"
 spec:
   replicas: 1
   selector:
@@ -166,11 +168,11 @@ spec:
           ports:
             - containerPort: 8000
           env:
-            - name: DB_PASSWORD1  # The name of the environment variable in the container;
+            - name: DB_PASSWORD1
               valueFrom:
                 secretKeyRef:
                   name: conjur
-                  key: DB_PASSWORD1  # The key of the secret in Kubernetes;
+                  key: DB_PASSWORD1
 ```
 
 Apply the dummy application to the cluster:
