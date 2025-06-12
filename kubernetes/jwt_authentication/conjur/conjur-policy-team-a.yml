@@ -1,0 +1,34 @@
+# Hosts;
+- !host
+  # The host that is used in OpenShift to read secrets from Conjur;
+  id: namespace-team-a
+  annotations:
+    authn-jwt/k8s-workload-cluster-a/namespace: namespace-team-a
+    authn-jwt/k8s-workload-cluster-a/sub: system:serviceaccount:namespace-team-a:jwt-eso-service-account-namespace-team-a
+    kubernetes: true
+
+# Variables;
+- &api-keys
+  - !variable
+    id: dockerhub-api-key
+  - !variable
+    id: nexus-api-key
+
+# Layers;
+- !layer namespace-team-a
+
+# Grants/Permits;
+- !grant
+  role: !layer namespace-team-a
+  members:
+    - !host conjur-team-g
+
+- !permit
+  role: !layer namespace-team-a
+  resource: *api-keys
+  privileges: [read, execute]
+
+- !grant
+  role: !layer jwt-consumers
+  members:
+    - !host conjur-team-g

@@ -50,7 +50,7 @@ echo -n "host/serverxyz" | base64  # Output: dGVzdGluZy9kYXRhYmFzZS1wYXNzd29yZDE
 echo -n "host-api-key" | base64  # Output: YXBpLWtleQ==
 ```
 #### 2.3 Create the Secret
-Create a file ([secret.yml](kubernetes/secret.yml)) with the following content (replace the placeholders `<host_id_base64>`
+Create a file ([secret.yml](kubernetes/api-key_authentication/secret.yml)) with the following content (replace the placeholders `<host_id_base64>`
 and `<host_id_base64>` with the base64 encoded values):
 
 ```yaml
@@ -74,7 +74,7 @@ NB: Storing a secret in code is not recommended. In a production environment you
 
 
 ### Step 3: Create an External Secret Store
-Now we need to create an External Secret Store that points to the Conjur secret ([secret-store.yml](kubernetes/secret-store.yml)).
+Now we need to create an External Secret Store that points to the Conjur secret ([secret-store.yml](kubernetes/api-key_authentication/secret-store.yml)).
 The External Secret Store is a custom resource that tells the External Secrets Operator how to
 connect to the secret store (in this case Conjur).
 
@@ -111,7 +111,7 @@ kubectl apply -f secret-store.yml -n hello-world-eso
 
 ### Step 4: Create an External Secret
 Now we can create an External Secret that points to the Conjur secret
-([external-secret.yml](kubernetes/external-secret.yml)). The external
+([external-secret.yml](kubernetes/api-key_authentication/external-secret.yml)). The external
 secret will map the Conjur secret to a Kubernetes secret.
 
 ```yaml
@@ -140,7 +140,7 @@ kubectl apply -f external-secret.yml -n hello-world-eso
 
 ### Step 5: Create a Dummy Application
 Now we can create a dummy application that reads the secret from Kubernetes
-([hello-world.yml](kubernetes/hello-world.yml). We use the image `nmatsui/hello-world-api`
+([hello-world.yml](kubernetes/api-key_authentication/hello-world.yml). We use the image `nmatsui/hello-world-api`
 for this.
 
 ```yaml

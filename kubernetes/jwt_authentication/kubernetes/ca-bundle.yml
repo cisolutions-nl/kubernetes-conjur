@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: conjur-ca-bundle
+  namespace: namespace-team-a
+data:
+  # This certificate is required for a secure connection between ESO and the Conjur Follower
+  # openssl s_client -showcerts -connect conjur-cluster.url:443 </dev/null | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p'
+  ca-bundle: |
+    -----BEGIN CERTIFICATE-----
+    -----END CERTIFICATE-----
+    -----BEGIN CERTIFICATE-----
+    -----END CERTIFICATE-----

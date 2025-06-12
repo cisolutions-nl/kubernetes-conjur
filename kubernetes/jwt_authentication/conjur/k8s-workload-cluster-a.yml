@@ -1,0 +1,97 @@
+### kubernetes - k8s-workload-cluster-a ###
+- !group
+  id: k8s-workload-cluster-a-admins
+  annotations:
+    kubernetes: true
+
+- !policy
+  id: k8s-workload-cluster-a
+  annotations:
+    kubernetes: true
+  owner: !group k8s-workload-cluster-a-admins
+  body:
+    - !user
+      id: admin
+      annotations:
+        kubernetes: true
+    - !layer
+      id: consumers
+      annotations:
+        kubernetes: true
+    - !layer
+      id: jwt-consumers
+      annotations:
+        kubernetes: true
+
+# To make sure the Conjur admin team can edit the policy
+- !grant
+  role: !group k8s-workload-cluster-a-admins
+  members:
+    - !user admin@k8s-workload-cluster-a
+    - !user authenticator-admin
+
+# JWT Configuration for kubernetes
+- !policy
+  id: conjur/authn-jwt/k8s-workload-cluster-a
+  owner: !group k8s-workload-cluster-a-admins
+  annotations:
+    description: Shared JWT Authenticator web service for kubernetes
+    kubernetes: true
+  body:
+    - !webservice
+      annotations:
+        kubernetes: true
+    - !variable
+      id: public-keys
+      annotations:
+        kubernetes: true
+    - !variable
+      id: claim-aliases
+      annotations:
+        kubernetes: true
+    - !variable
+      id: enforced-claims
+      annotations:
+        kubernetes: true
+    - !variable
+      id: issuer
+      annotations:
+        kubernetes: true
+    - !variable
+      id: audience
+      annotations:
+        kubernetes: true
+
+    # Group of applications that can authenticate using this JWT Authenticator
+    - !group
+      id: consumers
+      annotations:
+        kubernetes: true
+    - !permit
+      role: !group consumers
+      privilege: [read, authenticate]
+      resource: !webservice
+    - !webservice
+      id: status
+      annotations:
+        kubernetes: true
+
+    # Group of users who can check the status of the JWT Authenticator
+    - !group
+      id: operators
+      annotations:
+        kubernetes: true
+    - !permit
+      role: !group operators
+      privilege: [read]
+      resource: !webservice status
+
+# To make sure the jwt-consumers has authenticate privilege on the webservice of this policy
+- !grant
+  role: !group conjur/authn-jwt/k8s-workload-cluster-a/consumers
+  member: !layer k8s-workload-cluster-a/jwt-consumers
+
+### Namespace hosts linked to team namespace layers ###
+- !grant
+  role: !layer k8s-workload-cluster-a/jwt-consumers
+  member: !layer teamA/jwt-consumers
