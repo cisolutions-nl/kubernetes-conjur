@@ -28,7 +28,6 @@
   role: !group k8s-workload-cluster-a-admins
   members:
     - !user admin@k8s-workload-cluster-a
-    - !user authenticator-admin
 
 # JWT Configuration for kubernetes
 - !policy
@@ -90,8 +89,3 @@
 - !grant
   role: !group conjur/authn-jwt/k8s-workload-cluster-a/consumers
   member: !layer k8s-workload-cluster-a/jwt-consumers
-
-### Namespace hosts linked to team namespace layers ###
-- !grant
-  role: !layer k8s-workload-cluster-a/jwt-consumers
-  member: !layer teamA/jwt-consumers
