@@ -13,6 +13,6 @@
     id: nexus-api-key
 
 - !permit
-  role: !host conjur-team-g
+  role: !host namespace-team-a
   resource: *api-keys
   privileges: [read, execute]

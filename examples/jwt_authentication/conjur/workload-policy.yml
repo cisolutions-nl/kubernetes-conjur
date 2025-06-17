@@ -22,4 +22,4 @@
 - !grant
   role: !layer jwt-consumers
   members:
-    - !host conjur-team-g
+    - !host namespace-team-a
