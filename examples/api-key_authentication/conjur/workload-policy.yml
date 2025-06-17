@@ -1,0 +1,18 @@
+# Hosts;
+- !host
+  # The host that is used in OpenShift to read secrets from Conjur;
+  id: namespace-team-a
+  annotations:
+    kubernetes: true
+
+# Variables;
+- &api-keys
+  - !variable
+    id: dockerhub-api-key
+  - !variable
+    id: nexus-api-key
+
+- !permit
+  role: !host conjur-team-g
+  resource: *api-keys
+  privileges: [read, execute]

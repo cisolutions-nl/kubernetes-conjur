@@ -1,0 +1,22 @@
+### kubernetes - k8s-workload-cluster-a ###
+- !group
+  id: k8s-workload-cluster-a-admins
+  annotations:
+    kubernetes: true
+
+- !policy
+  id: k8s-workload-cluster-a
+  annotations:
+    kubernetes: true
+  owner: !group k8s-workload-cluster-a-admins
+  body:
+    - !user
+      id: admin
+      annotations:
+        kubernetes: true
+
+# To make sure the Conjur admin team can edit the policy
+- !grant
+  role: !group k8s-workload-cluster-a-admins
+  members:
+    - !user admin@k8s-workload-cluster-a

@@ -14,17 +14,8 @@
   - !variable
     id: nexus-api-key
 
-# Layers;
-- !layer namespace-team-a
-
-# Grants/Permits;
-- !grant
-  role: !layer namespace-team-a
-  members:
-    - !host conjur-team-g
-
 - !permit
-  role: !layer namespace-team-a
+  role: !host namespace-team-a
   resource: *api-keys
   privileges: [read, execute]
 
